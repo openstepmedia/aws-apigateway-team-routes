@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Jest Tests",
+        "program": "${workspaceFolder}/orders/api/node_modules/.bin/jest",
+        "args": [
+          "--runInBand",
+          "--resetModules",
+          "--config",
+          "${workspaceFolder}/orders/api/jest.config.mjs"
+        ],
+        "cwd": "${workspaceFolder}/orders/api",
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "windows": {
+          "program": "${workspaceFolder}/orders/api/node_modules/jest/bin/jest"
+        },
+        "env": {
+          "NODE_OPTIONS": "--no-warnings --experimental-vm-modules"
+        }        
+      }
+    ]
+  }

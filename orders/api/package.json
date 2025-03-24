@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@vinejs/vine": "^3.0.1",
+    "dotenv": "^16.4.7",
+    "lambda-api": "^1.1.2"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.26.9",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0"
+  },
+  "scripts": {
+    "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "type": "module"
+}
