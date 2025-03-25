@@ -40,12 +40,27 @@ export class OrdersResourceStack extends cdk.Stack {
     const ordersResource = existingApi.root.addResource('orders');
 
     // Create the /orders/{proxy+} path
+    // @see https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.ProxyResourceOptions.html
     ordersResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(lambdaHandler),
 
       // "false" will require explicitly adding methods on the `proxy` resource
       anyMethod: true, // "true" is the default  
     });
+
+    // Method 1: Add documentation using ApiGatewayDocumentationPart
+    new apigateway.CfnDocumentationPart(this, 'GetOrdersDoc', {
+      restApiId: apiId,
+      location: {
+        path: '/orders/v1/status',
+        method: 'GET',
+        type: 'METHOD'
+      },
+      properties: JSON.stringify({
+        summary: 'Get order api status',
+        description: 'Retrieves a list of all registered users'
+      })
+    });    
 
   }
 }
