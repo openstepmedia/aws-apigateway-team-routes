@@ -81,6 +81,7 @@ export class TeamCommerceApiGatewayStack extends cdk.Stack {
     // Create an API Gateway deployment to deploy the API
     new cdk.CfnOutput(this, 'ApiEndpoint', {
       value: api.url,
+      exportName: 'TeamCommerceApiGatewayStack:ApiEndpoint',
       description: 'The URL of the API Gateway endpoint',
     });
     
@@ -93,13 +94,21 @@ export class TeamCommerceApiGatewayStack extends cdk.Stack {
     // Output the API ARN
     new cdk.CfnOutput(this, 'ApiArn', {
       value: api.arnForExecuteApi(),
+      exportName: 'TeamCommerceApiGatewayStack:ApiArn',
       description: 'The ARN of the API Gateway',
     });
     
     // Output the API ID
     new cdk.CfnOutput(this, 'ApiId', {
       value: api.restApiId,
+      exportName: 'TeamCommerceApiGatewayStack:ApiId',
       description: 'The ID of the API Gateway',
     });
+    
+    // Export RootResourceId
+    new cdk.CfnOutput(this, 'RootResourceId', {
+      value: api.root.resourceId,
+      exportName: 'TeamCommerceApiGatewayStack:RootResourceId',
+    });    
   }
 }
