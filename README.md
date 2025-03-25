@@ -1,12 +1,15 @@
-# aws-apigateway-team-routes
-Demo structure for team owned routes on API Gateway
+# Demo structure for team owned routes on API Gateway
 
 This is a proof of concept inspired by this article:
 
-Architecting multiple microservices behind a single domain with Amazon API Gateway
+**Architecting multiple microservices behind a single domain with Amazon API Gateway**
 https://aws.amazon.com/blogs/compute/architecting-multiple-microservices-behind-a-single-domain-with-amazon-api-gateway/
 
-The question is, can we create a organization-wide API Gateway and have different teams own different API paths separately, so that each team controls their own codebase.
+Ideally, the organization would like to host all of its API under a single domain:
+
+Example: https://api.orginzation.com/v1
+
+The question is, can we create a organization-wide API Gateway and have different teams own different API paths separately, so that each team controls their own codebase and deploy independently.
 
 In this demo, there are 2 different developer teams:
 
