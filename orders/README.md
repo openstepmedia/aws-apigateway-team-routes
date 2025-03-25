@@ -1,4 +1,6 @@
-# Welcome to your CDK TypeScript project
+# Orders Endpoint
+
+This endpoint is managed by the Orders team.
 
 This is a blank project for CDK development with TypeScript.
 

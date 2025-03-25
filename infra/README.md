@@ -1,4 +1,7 @@
-# Welcome to your CDK TypeScript project
+# Empty API Gateway
+
+This CDK project initializes a default/empty API Gatway resource
+that will be added to later by each sub route.
 
 This is a blank project for CDK development with TypeScript.
 

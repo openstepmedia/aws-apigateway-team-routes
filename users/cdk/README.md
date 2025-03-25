@@ -1,6 +1,4 @@
-# Users Endpoint
-
-This project is managed by the Users team
+# Welcome to your CDK TypeScript project
 
 This is a blank project for CDK development with TypeScript.
 
