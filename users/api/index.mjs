@@ -1,7 +1,10 @@
-// Require the framework and instantiate it
+/**
+ * Lightweight API for managing users.
+ * This file behaves as the entry point / front-controller for the API.
+ */
+import createAPI from 'lambda-api';
 import UsersController from './controllers/UsersController.mjs';
 import UsersMiddleware from './middleware/UsersMiddleware.mjs';
-import createAPI from 'lambda-api';
 
 // instantiate framework
 // @see https://github.com/jeremydaly/lambda-api
@@ -23,19 +26,19 @@ api.get('/status', async (req, res) => {
   return { status: 'ok' };
 });
 
-// Get one order
+// Get one user
 api.get('/:id', UsersController.read);
 
 // Get all users
 api.get('/',  UsersController.all);
 
-// Create an order with validation middleware
+// Create an user with validation middleware
 api.post('/', UsersMiddleware.create, UsersController.create);
 
-// Update an order
+// Update a user
 api.put('/:id', UsersController.update);
 
-// Delete an order
+// Delete a user
 api.delete('/:id', UsersController.delete);
 
 // Declare your Lambda handler
