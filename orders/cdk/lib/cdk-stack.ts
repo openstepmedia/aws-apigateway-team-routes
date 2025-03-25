@@ -14,7 +14,7 @@ export class OrdersResourceStack extends cdk.Stack {
 
     // Create a Lambda function to handle the version request
     const codePath = path.join(__dirname, '..', '..', 'api');
-    const ordersLambda = new lambda.Function(this, 'OrdersLambda', {
+    const lambdaHandler = new lambda.Function(this, 'OrdersLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(codePath), // This assumes the file is in a 'lambda' directory
@@ -24,7 +24,7 @@ export class OrdersResourceStack extends cdk.Stack {
         API_VERSION: '1.0.0',
         API_LOG_LEVEL: 'debug',
       },
-      description: 'Lambda function that returns the transcode service version',
+      description: 'Lambda managed by the Orders Service Team',
     });    
 
     const apiId = cdk.Fn.importValue(`${props.existingApiStackName}:ApiId`);
@@ -40,9 +40,12 @@ export class OrdersResourceStack extends cdk.Stack {
     const ordersResource = existingApi.root.addResource('orders');
 
     // Create the /orders/{proxy+} path
-    const ordersProxyResource = ordersResource.addResource('{proxy+}')
+    ordersResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(lambdaHandler),
 
-    // Add ANY resource method to the /orders/{proxy+} path for lambda-api integration
-    ordersProxyResource.addMethod('ANY', new apigateway.LambdaIntegration(ordersLambda));
+      // "false" will require explicitly adding methods on the `proxy` resource
+      anyMethod: true, // "true" is the default  
+    });
+
   }
 }
