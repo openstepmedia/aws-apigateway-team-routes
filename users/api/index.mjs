@@ -4,6 +4,7 @@ import UsersMiddleware from './middleware/UsersMiddleware.mjs';
 import createAPI from 'lambda-api';
 
 // instantiate framework
+// @see https://github.com/jeremydaly/lambda-api
 const api = createAPI({ 
     version: process.env.API_VERSION || 'v1.0',
     base: process.env.API_BASE, 
@@ -17,7 +18,7 @@ const api = createAPI({
     }    
 });
 
-// Define a route
+// Status check
 api.get('/status', async (req, res) => {
   return { status: 'ok' };
 });
@@ -28,7 +29,7 @@ api.get('/:id', UsersController.read);
 // Get all users
 api.get('/',  UsersController.all);
 
-// Create an order
+// Create an order with validation middleware
 api.post('/', UsersMiddleware.create, UsersController.create);
 
 // Update an order
@@ -39,10 +40,5 @@ api.delete('/:id', UsersController.delete);
 
 // Declare your Lambda handler
 export const handler = async (event, context, callback) => {
-    // !!!IMPORTANT: Set this flag to false, otherwise the lambda function
-    // won't quit until all DB connections are closed, which is not good
-    // if you want to freeze and reuse these connections
-    context.callbackWaitsForEmptyEventLoop = false;
-
     return api.run(event, context, callback);
 };

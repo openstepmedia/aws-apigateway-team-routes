@@ -1,3 +1,10 @@
+/**
+ * UsersController
+ * Each method acts as a transformer between the HTTP request and the UserModel
+ * @class
+ * @see https://github.com/jeremydaly/lambda-api?tab=readme-ov-file#request
+ * Using static methods to avoid instantiating the class and keeping index.mjs cleaner.
+ */
 import UserModel from '../models/UserModel.mjs';
 
 class UsersController {

@@ -1,3 +1,7 @@
+/**
+ * Simple user model
+ * @module users/api/models/UserModel
+ */
 import crypto from 'crypto';
 
 class User {
