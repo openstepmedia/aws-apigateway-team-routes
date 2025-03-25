@@ -3,9 +3,11 @@ import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
+import { LambdaLayerStack } from './cdk-layer-stack';
 
 export interface ApiProps extends cdk.StackProps {
   existingApiStackName: string;
+  lambdaLayer?: LambdaLayerStack;
 }
 
 export class UsersResourceStack extends cdk.Stack {
@@ -25,6 +27,7 @@ export class UsersResourceStack extends cdk.Stack {
         API_LOG_LEVEL: 'debug',
       },
       description: 'Lambda managed by the Users Service Team',
+      layers: props.lambdaLayer ? [props.lambdaLayer.layer] : [],
     });    
 
     const apiId = cdk.Fn.importValue(`${props.existingApiStackName}:ApiId`);
