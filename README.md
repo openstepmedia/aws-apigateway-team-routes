@@ -103,6 +103,10 @@ cd users\api
 npm run test -- --resetModules
 ```
 
+A sample API test using the AWS Console.
+
+![Alt text](images/api-gateway-orders-resource-test.png)
+
 
 ---
 
