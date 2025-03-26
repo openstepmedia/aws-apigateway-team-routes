@@ -1,8 +1,5 @@
 {
   "dependencies": {
-    "@vinejs/vine": "^3.0.1",
-    "dotenv": "^16.4.7",
-    "lambda-api": "^1.1.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.9",

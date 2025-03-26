@@ -36,11 +36,13 @@ export class TeamCommerceApiGatewayStack extends cdk.Stack {
       },
 
       // Default CORS configuration
+      /*
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS,
         allowHeaders: ['Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key'],
       },
+      */
     });
 
     // Create a Lambda function that returns a build number
@@ -70,8 +72,9 @@ export class TeamCommerceApiGatewayStack extends cdk.Stack {
     });
 
     // Create an API Gateway resource and method for the build number endpoint
-    const buildResource = api.root.addResource('build');
-    const buildNumberResource = buildResource.addResource('number');
+    const infraResource = api.root.addResource('infra');
+    const versionResource = infraResource.addResource('v1');
+    const buildNumberResource = versionResource.addResource('build');
     
     // Integrate the Lambda function with the API Gateway
     buildNumberResource.addMethod('GET', new apigateway.LambdaIntegration(buildNumberLambda, {

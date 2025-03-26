@@ -10,6 +10,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "flydrive": "^1.1.1"
+    "@vinejs/vine": "^3.0.1",
+    "dotenv": "^16.4.7",
+    "flydrive": "^1.1.1",
+    "lambda-api": "^1.1.2"
   }
 }

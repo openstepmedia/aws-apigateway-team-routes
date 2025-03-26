@@ -44,18 +44,39 @@ The code behind the routes is using the lambda-api library.
 
 This will launch the shell of an API Gateway named TeamCommerceApiGateway
 
-The gateway will have a default GET method that will return the build number.
+The gateway will has a default GET method that will return the build number - at `/infra/v1/build`
 
 To deploy:
 
 ```
 cd infra/cdk
+cp .env.example .env
 cdk deploy
 ```
 
 ## Users CDK
 
 The CDK stack will create a new proxy resource on the TeamCommerceApiGateway at `/users`
+
+Adjust the `.env` file with version and path information
+
+```
+cd users/api
+cp .env.example .env
+```
+
+Automatically generate OpenAPI 3.0 documentation
+
+If this is run, a file named api/openapi.json will be created. 
+
+This will automatically be added to the API Gateway Documentation!
+
+```
+npm run openapidocs
+```
+
+
+Deploy
 
 ```
 cd users/cdk
