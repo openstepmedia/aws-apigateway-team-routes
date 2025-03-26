@@ -7,7 +7,7 @@ https://aws.amazon.com/blogs/compute/architecting-multiple-microservices-behind-
 
 Ideally, the organization would like to host all of its API under a single domain:
 
-Example: https://api.orginzation.com/v1
+Example: https://api.organization.com/v1
 
 The question is, can we create a organization-wide API Gateway and have different teams own different API paths separately, so that each team controls their own codebase and deploy independently.
 
@@ -59,6 +59,71 @@ cdk deploy
 ## Users CDK
 
 The CDK stack will create a new proxy resource on the TeamCommerceApiGateway at `/users`
+
+The example routes that are available are:
+
+```
+GET /status
+GET /{id}
+GET /
+PUT /{id}
+POST /
+DELETE /{id}
+```
+
+Note the /status route will return the following information
+
+```
+{
+    "build": "20250326000000",
+    "status": "ok",
+    "routes": [
+        [
+            "GET",
+            "/users/v1",
+            [
+                "all"
+            ]
+        ],
+        [
+            "POST",
+            "/users/v1",
+            [
+                "create",
+                "create"
+            ]
+        ],
+        [
+            "GET",
+            "/users/v1/status",
+            [
+                "unnamed"
+            ]
+        ],
+        [
+            "GET",
+            "/users/v1/:id",
+            [
+                "read"
+            ]
+        ],
+        [
+            "PUT",
+            "/users/v1/:id",
+            [
+                "update"
+            ]
+        ],
+        [
+            "DELETE",
+            "/users/v1/:id",
+            [
+                "delete"
+            ]
+        ]
+    ]
+}
+```
 
 Adjust the `.env` file with version and path information
 
@@ -148,6 +213,30 @@ Automated Documentation from by [swagger-jsdoc](https://github.com/Surnet/swagge
 ---
 
 NOTE: There is no security built into this yet.
+
+## Notes
+
+Pros and cons of using the api gateway {proxy+} resource 
+
+### Pros
+1. **Simplified Routing**: The `{proxy+}` resource acts as a catch-all, forwarding all requests under a specific path to a backend service. This reduces the need to define individual routes for every endpoint, streamlining setup.
+2. **Flexibility**: It allows the backend (e.g., Lambda or a custom server) to handle routing logic, making it ideal for dynamic or complex applications where paths might change frequently.
+3. **Reduced Configuration Overhead**: You don’t need to manually map every possible HTTP method or path in the API Gateway, saving time and effort, especially for large APIs.
+4. **Scalability**: API Gateway handles scaling automatically, and `{proxy+}` ensures all requests are efficiently passed to the backend without additional configuration as traffic grows.
+5. **Integration with Serverless**: Works seamlessly with serverless architectures (e.g., AWS Lambda), letting the backend process requests without worrying about managing servers or detailed Gateway setup.
+
+### Cons
+1. **Less Granular Control**: By using `{proxy+}`, you offload routing logic to the backend, losing some of API Gateway’s ability to filter or transform requests at the gateway level (e.g., via custom mappings or policies).
+2. **Increased Backend Responsibility**: The backend must handle all path parsing and validation, which could increase complexity or introduce errors if not implemented carefully.
+3. **Security Risks**: Since `{proxy+}` forwards all requests (including malformed or unexpected ones), the backend must be robust enough to handle invalid inputs, or you risk exposing vulnerabilities.
+4. **Debugging Challenges**: Troubleshooting can be harder because API Gateway logs might not provide detailed insights into specific paths or methods—everything is lumped under the proxy.
+5. **Cost Considerations**: While simple to set up, API Gateway charges based on request volume, and `{proxy+}` might lead to higher costs if it forwards unnecessary or unfiltered traffic to the backend.
+
+### Use Case Fit
+- **Good For**: Rapid prototyping, serverless apps, or scenarios where the backend already has strong routing logic (e.g., an Express.js server or a prebuilt API).
+- **Not Ideal For**: APIs requiring fine-tuned request validation, transformation, or throttling at the gateway level before hitting the backend.
+
+
 
 
 
