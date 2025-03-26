@@ -129,7 +129,11 @@ npm run test -- --resetModules
 
 A sample API test using the AWS Console.
 
-![Alt text](images/api-gateway-orders-resource-test.png)
+![/users status check](images/api-gateway-orders-resource-test.png)
+
+Automated Documentation from by [swagger-jsdoc](https://github.com/Surnet/swagger-jsdoc)
+
+![Automated Documentation](images/api-gateway-users-documentation.png)
 
 
 ---
