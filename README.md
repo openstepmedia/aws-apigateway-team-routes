@@ -24,10 +24,12 @@ The project folder looks like this:
 ├── users
 │   ├── README.md
 │   ├── api
+│   ├── layers/nodejs
 │   └── cdk
 └── orders
     ├── README.md
     ├── api
+│   ├── layers/nodejs
     └── cdk
 ```
 
@@ -91,6 +93,13 @@ The CDK stack will create a new proxy resource on the TeamCommerceApiGateway at 
 cd orders/cdk
 cdk deploy
 ```
+
+## Lambda Layers
+
+In order to keep the api folders as slim as possible, a lambda layer is created in the CDK stack.
+
+`jest.config.mjs` has modulePaths configured to use the packages installed in layers/nodejs.
+
 
 ## MVC Architecture
 
