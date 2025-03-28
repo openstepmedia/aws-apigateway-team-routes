@@ -16,5 +16,11 @@ export default {
   
   modulePaths: [
     "<rootDir>/layers/nodejs/node_modules/"
+  ],
+
+  // Add or update this line to ignore the cdk folder
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "<rootDir>/cdk/"
   ],  
 };

@@ -1,12 +1,12 @@
 /**
- * Lightweight API for managing users.
+ * Lightweight API for managing coupons.
  * This file behaves as the entry point / front-controller for the API.
  * 
  * swagger-jsdoc is used to create an OpenAPI specification from JSDoc comments.
  */
 import createAPI from 'lambda-api';
-import CouponsController from '../controllers/CouponsController.mjs';
-import CouponsMiddleware from '../middleware/CouponsMiddleware.mjs';
+import CouponsController from './controllers/CouponsApiGatewayController.mjs';
+import CouponsMiddleware from './middleware/CouponsMiddleware.mjs';
 
 // instantiate framework
 // @see https://github.com/jeremydaly/lambda-api
@@ -30,7 +30,7 @@ const api = createAPI({
  * /status:
  *   get:
  *     summary: Get API status
- *     tags: [Users]
+ *     tags: [coupons]
  *     responses:
  *       200:
  *         description: API status information
@@ -61,8 +61,8 @@ api.get('/status', async (req, res) => {
  * @openapi
  * /{id}:
  *   get:
- *     summary: Get a user by ID
- *     tags: [Users]
+ *     summary: Get a coupon by ID
+ *     tags: [coupons]
  *     parameters:
  *       - in: path
  *         name: id
@@ -70,14 +70,14 @@ api.get('/status', async (req, res) => {
  *           type: string
  *           format: uuid
  *         required: true
- *         description: The user ID
+ *         description: The coupon ID
  *     responses:
  *       200:
- *         description: User details
+ *         description: coupon details
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/coupon'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -87,17 +87,17 @@ api.get('/:id', CouponsController.read);
  * @openapi
  * /:
  *   get:
- *     summary: Get all users
- *     tags: [Users]
+ *     summary: Get all coupons
+ *     tags: [coupons]
  *     responses:
  *       200:
- *         description: A list of users
+ *         description: A list of coupons
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/coupon'
  */
 api.get('/',  CouponsController.all);
 
@@ -105,8 +105,8 @@ api.get('/',  CouponsController.all);
  * @openapi
  * /:
  *   post:
- *     summary: Create a new user with validation
- *     tags: [Users]
+ *     summary: Create a new coupon with validation
+ *     tags: [coupons]
  *     requestBody:
  *       required: true
  *       content:
@@ -119,14 +119,14 @@ api.get('/',  CouponsController.all);
  *               email:
  *                 type: string
  *                 format: email
- *                 description: The user's email address
+ *                 description: The coupon's email address
  *     responses:
  *       201:
- *         description: User created successfully
+ *         description: coupon created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/coupon'
  *       400:
  *         $ref: '#/components/responses/BadRequest'
  */
@@ -136,8 +136,8 @@ api.post('/', CouponsMiddleware.create, CouponsController.create);
  * @openapi
  * /{id}:
  *   put:
- *     summary: Update a user
- *     tags: [Users]
+ *     summary: Update a coupon
+ *     tags: [coupons]
  *     parameters:
  *       - in: path
  *         name: id
@@ -145,7 +145,7 @@ api.post('/', CouponsMiddleware.create, CouponsController.create);
  *           type: string
  *           format: uuid
  *         required: true
- *         description: The user ID
+ *         description: The coupon ID
  *     requestBody:
  *       required: true
  *       content:
@@ -161,11 +161,11 @@ api.post('/', CouponsMiddleware.create, CouponsController.create);
  *                 description: The updated email address
  *     responses:
  *       200:
- *         description: User updated successfully
+ *         description: coupon updated successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/coupon'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  *       400:
@@ -177,8 +177,8 @@ api.put('/:id', CouponsController.update);
  * @openapi
  * /{id}:
  *   delete:
- *     summary: Delete a user
- *     tags: [Users]
+ *     summary: Delete a coupon
+ *     tags: [coupons]
  *     parameters:
  *       - in: path
  *         name: id
@@ -186,14 +186,14 @@ api.put('/:id', CouponsController.update);
  *           type: string
  *           format: uuid
  *         required: true
- *         description: The user ID
+ *         description: The coupon ID
  *     responses:
  *       200:
- *         description: User deleted successfully
+ *         description: coupon deleted successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/coupon'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */

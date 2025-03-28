@@ -2,7 +2,7 @@
  * Usage:
  * npm run test -- --resetModules
  */
-const api = await import('../api/index');
+const api = await import('../app/api.index');
 
 describe('Coupons API', () => {
   test('should define a status endpoint', async () => {
@@ -85,7 +85,7 @@ describe('Coupons API', () => {
   
 
   test('should create 10 coupons then get all coupons', async () => {
-    const api = await import('../api/index');
+    const api = await import('../app/api.index');
 
     let postEvent = {
       httpMethod: 'post',
