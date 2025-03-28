@@ -1,6 +1,47 @@
-# Users Endpoint
+# Coupons Endpoint
 
-This project is managed by the Users team
+This project is managed by the Coupons team
+
+The coupons team needs their lambdas available from both 
+
+AWS API Gateway
+
+=- AND -=
+
+AWS Step functions.
+
+This is a proof of concept to show how lambda-api can be used 
+as a front-controller for both methods.
+
+https://github.com/jeremydaly/lambda-api
+
+## lambda-api entry point
+
+There are 2 lambda handler files for the lambda-api entry point:
+
+`app/statemachine.mjs`
+
+Note how the handler sets httpMethod in the handler, this is to declutter 
+the statemachine.asl and get the benefits of the lambda-api routing and body 
+parsing / serialization.
+
+
+`app/apigateway.mjs`
+
+
+
+## Controllers
+
+For now there are 2 controllers:
+
+`CouponsStatemachineController.mjs`
+
+`CouponsApiGatewayController.mjs`
+
+Theoretically, there could be a single controller for both, but the nature of the routes might have different contexts.
+
+
+
 
 This is a blank project for CDK development with TypeScript.
 
