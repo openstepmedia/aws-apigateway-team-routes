@@ -50,7 +50,22 @@ export const handler = async (event, context) => {
      */
     event.httpMethod = 'post';
 
+    /**
+     * If you are using persistent connections in your function routes 
+     * (such as AWS RDS or Elasticache), be sure to 
+     * set context.callbackWaitsForEmptyEventLoop = false; 
+     * This will allow the freezing of connections and 
+     * will prevent Lambda from hanging on open connections. 
+     * See: https://docs.aws.amazon.com/lambda/latest/dg/services-alb.html
+     */
+    context.callbackWaitsForEmptyEventLoop = false; 
+
+    /**
+     * Wait for lambda-api to execute
+     */
     const response = await api.run(event, context);
+
+    console.debug('response.body:', response.body);
 
     /**
      * For statemachines - strip out all header info.

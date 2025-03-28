@@ -12,7 +12,7 @@ class CouponsStatemachineController {
     static async state1(req, res) {
         // use logger
         // @see https://github.com/jeremydaly/lambda-api/tree/main?tab=readme-ov-file#adding-additional-detail
-        req.log.info('state1 input:', req.body.input);
+        req.log.info('state1 input:' +  JSON.stringify(req.body.input));
 
         const output = {
             state1Value: {
@@ -27,7 +27,7 @@ class CouponsStatemachineController {
     }
 
     static async state2(req, res) {
-        req.log.info('state2 input:', req.body.input);
+        req.log.info('state2 input:' +  JSON.stringify(req.body.input));
 
         const output = {
             state2Value: {
