@@ -2,7 +2,7 @@
 
 This project is managed by the Coupons team
 
-The coupons team needs their lambdas available from both 
+The coupons team needs their lambdas available for both 
 
 AWS API Gateway
 
