@@ -1,0 +1,47 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Coupon Tests",
+      "program": "${workspaceFolder}/coupons/node_modules/.bin/jest",
+      "args": [
+        "--runInBand",
+        "--resetModules",
+        "--config",
+        "${workspaceFolder}/coupons/jest.config.mjs"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "windows": {
+        "program": "${workspaceFolder}/coupons/node_modules/jest/bin/jest"
+      },
+      "env": {
+        "NODE_OPTIONS": "--no-warnings --experimental-vm-modules"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Jest Tests",
+      "program": "${workspaceFolder}/coupons/node_modules/.bin/jest",
+      "args": [
+        "--runInBand",
+        "--resetModules",
+        "--config",
+        "${workspaceFolder}/coupons/jest.config.mjs"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "windows": {
+        "program": "${workspaceFolder}/coupons/node_modules/jest/bin/jest"
+      },
+      "env": {
+        "NODE_OPTIONS": "--no-warnings --experimental-vm-modules"
+      }
+    }
+  ]
+}

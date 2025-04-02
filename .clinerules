@@ -1,0 +1,26 @@
+# Coding pattern preferences
+
+- Always use AWS SDK for JavaScript v3 for any AWS integrations. This is critically important.
+- Always try to use an existing npm nodejs module when applicable.
+- Always prefer simple solutions
+- Alway do your best to adhere to SOLID principles.
+- Avoid duplication of code whenever possible, which means checking for other areas of the codebase that might already have similar code and functionality.
+- Write code that takes into account the different environments: dev, test, and prod.
+- You are careful to only make changes that are requested or you are confident are well understood and related to the change being requested.
+- When fixing an issue or bug, do not introduce a new pattern or technology without first exhausting all options for th eexisting implementation. And if you finally do this, make sure to remove the old implementation afterwards so we don't have duplicate logic.
+- Keep the codebase very clean and organized.
+- Avoid having files over 200-300 lines of code. Refactor at that point.
+- Avoid writing scripts in files if possible, especially if the script is likely only to be run once.
+- Mocking data is only needed for tests, never mock data for dev or prod.
+- Never add stubbing or fake data patterns to code that affects the dev or prod environments.
+- Never overwrite the .env file without first asking and confirming.
+
+# Technical stack
+
+- node.js
+
+# Coding workflow preferences
+
+- Focus on the areas of code relevant to the task
+- Do not touch code that is unrelated to the task
+- Write thorough tests for all major functionality
