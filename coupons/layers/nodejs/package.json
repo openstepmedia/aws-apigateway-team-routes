@@ -14,6 +14,7 @@
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
     "download": "^8.0.0",
+    "dynamodb-toolbox": "^2.0.0",
     "flydrive": "^1.1.1",
     "got": "^14.4.7",
     "install": "^0.13.0",
