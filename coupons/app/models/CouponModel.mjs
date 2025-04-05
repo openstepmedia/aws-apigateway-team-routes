@@ -1,11 +1,11 @@
 /**
- * Simple user model
- * @module users/api/models/UserModel
+ * Simple coupon model
+ * @module coupons/api/models/couponModel
  */
 import crypto from 'crypto';
 
 /**
- * Represents a user entity
+ * Represents a coupon's coupon
  * @class
  */
 class Coupon {
@@ -14,9 +14,9 @@ class Coupon {
     createdAt;
 
     /**
-     * Creates a new User instance
-     * @param {Object} params - The user parameters
-     * @param {string} params.email - The user's email address
+     * Creates a new Coupon instance
+     * @param {Object} params - The Coupon parameters
+     * @param {string} params.email - The Coupon coupon's email address
      */
     constructor(params) {
         this.id = crypto.randomUUID();
@@ -26,63 +26,63 @@ class Coupon {
 }
 
 /**
- * Provides methods for managing user data
+ * Provides methods for managing Coupon data
  * @class
  */
 class CouponModel {
-    static users = [];
+    static coupons = [];
 
     /**
-     * Retrieves all users
-     * @returns {Array<User>} An array of all users
+     * Retrieves all coupons
+     * @returns {Array<Coupon>} An array of all Coupon
      */
     static all() {
-        return this.users;
+        return this.coupons;
     }
 
     /**
-     * Creates a new user
-     * @param {Object} params - The user parameters
-     * @param {string} params.email - The user's email address
-     * @returns {User} The newly created user
+     * Creates a new coupon
+     * @param {Object} params - The Coupon parameters
+     * @param {string} params.email - The Coupon's email address
+     * @returns {Coupon} The newly created Coupon
      */
     static async create(params) {
-        const user = new Coupon({ email: params.email });
-        this.users.push(user);
-        return user;
+        const coupon = new Coupon({ email: params.email });
+        this.coupons.push(coupon);
+        return coupon;
     }
 
     /**
-     * Retrieves a user by ID
-     * @param {string} id - The ID of the user to retrieve
-     * @returns {User|undefined} The user if found, undefined otherwise
+     * Retrieves a coupon by ID
+     * @param {string} id - The ID of the coupon to retrieve
+     * @returns {Coupon|undefined} The coupon if found, undefined otherwise
      */
     static read(id) {
-        return this.users.find(user => user.id === id);
+        return this.coupons.find(coupon => coupon.id === id);
     }
 
     /**
-     * Updates a user by ID
-     * @param {string} id - The ID of the user to update
-     * @param {Object} params - The updated user parameters
+     * Updates a coupon by ID
+     * @param {string} id - The ID of the coupon to update
+     * @param {Object} params - The updated coupon parameters
      * @param {string} params.email - The updated email address
-     * @returns {User|undefined} The updated user if found, undefined otherwise
+     * @returns {Coupon|undefined} The updated coupon if found, undefined otherwise
      */
     static update(id, params) {
-        const user = this.users.find(user => user.id === id);
-        user.email = params.email;
-        return user;
+        const coupon = this.coupons.find(coupon => coupon.id === id);
+        coupon.email = params.email;
+        return coupon;
     }
 
     /**
-     * Deletes a user by ID
-     * @param {string} id - The ID of the user to delete
-     * @returns {User|undefined} The deleted user if found, undefined otherwise
+     * Deletes a coupon by ID
+     * @param {string} id - The ID of the coupon to delete
+     * @returns {Coupon|undefined} The deleted coupon if found, undefined otherwise
      */
     static delete(id) {
-        const user = this.users.find(user => user.id === id);
-        this.users = this.users.filter(user => user.id !== id);
-        return user;
+        const coupon = this.coupons.find(coupon => coupon.id === id);
+        this.coupons = this.coupons.filter(coupon => coupon.id !== id);
+        return coupon;
     }
 }
 
