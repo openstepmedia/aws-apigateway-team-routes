@@ -66,4 +66,4 @@ class CouponsApiGatewayController {
     }
 }
 
-export default CouponsApiGatewayController.mjs;
+export default CouponsApiGatewayController

@@ -53,7 +53,7 @@ router.get('/status', async (req, res) => {
     return { 
         build: process.env.BUILD_NUMBER || '0',
         status: 'ok',
-        routes: api.routes(),
+        routes: router.routes(),
     };
 });
   

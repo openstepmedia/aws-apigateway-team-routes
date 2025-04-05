@@ -1,29 +1,30 @@
 /**
  * Usage:
- * npm run test -- --resetModules
+ * npm run test -- api.index.test.mjs --resetModules --bail
  */
-const api = await import('../app/api.index');
+const api = await import('../app/apigateway.mjs');
 
 describe('Coupons API', () => {
-  test('should define a status endpoint', async () => {
+  test('should return a status of ok', async () => {
     const event = {
       httpMethod: 'get',
       path: '/coupons/v1/status',
       body: {},
     };
     const context = {};
-    const callback = () => { };
-    console.log('api:', api);
 
-    const result = await api.handler(event, context, callback);
+    const result = await api.handler(event, context);
 
+    // Result is object, body is a json string
     const body = JSON.parse(result.body);
+    console.debug('body', body);
 
     expect(body.status).toEqual('ok');
+    expect(body.build).toEqual(process.env.BUILD_NUMBER || '0');
     expect(result.statusCode).toBe(200);
   });
 
-  test('should create coupons', async () => {
+  test('should create a single coupon', async () => {
     const event = {
       httpMethod: 'post',
       path: '/coupons/v1',
@@ -32,9 +33,8 @@ describe('Coupons API', () => {
       },
     };
     const context = {};
-    const callback = () => { };    
 
-    const result = await api.handler(event, context, callback);
+    const result = await api.handler(event, context);
 
     const body = JSON.parse(result.body);
 
@@ -42,16 +42,15 @@ describe('Coupons API', () => {
     expect(result.statusCode).toBe(200);
   });
 
-  test('should fail create user', async () => {
+  test('should fail to create coupon', async () => {
     const event = {
       httpMethod: 'post',
       path: '/coupons/v1',
       body: {},
     };
     const context = {};
-    const callback = () => { };    
 
-    const result = await api.handler(event, context, callback);
+    const result = await api.handler(event, context);
 
     expect(result.statusCode).toBe(500);
   });   
@@ -65,18 +64,16 @@ describe('Coupons API', () => {
       },
     };
     const context = {};
-    const callback = () => { };    
 
-    const postResult = await api.handler(postEvent, context, callback);
+    const postResult = await api.handler(postEvent, context);
     const postBody = JSON.parse(postResult.body);
 
     const getEvent = {
       httpMethod: 'get',
       path: `/coupons/v1/${postBody.id}`,
-      body: {},
     };
 
-    const getResult = await api.handler(getEvent, context, callback);
+    const getResult = await api.handler(getEvent, context);
     const getBody = JSON.parse(getResult.body);
 
     expect(getBody.id).toEqual(postBody.id);
@@ -85,21 +82,20 @@ describe('Coupons API', () => {
   
 
   test('should create 10 coupons then get all coupons', async () => {
-    const api = await import('../app/api.index');
-
+    const api = await import('../app/apigateway.mjs');
+    
     let postEvent = {
       httpMethod: 'post',
       path: '/coupons/v1',
       body: {},
     };
     const context = {};
-    const callback = () => { };    
 
     for (let i = 0; i < 10; i++) {
       postEvent.body = {
         email: `username${i}@domain.com`
       };
-      await api.handler(postEvent, context, callback);
+      await api.handler(postEvent, context);
       console.log('postEvent', postEvent);
     }
 
@@ -109,7 +105,7 @@ describe('Coupons API', () => {
       body: {},
     };
 
-    const getResult = await api.handler(getEvent, context, callback);
+    const getResult = await api.handler(getEvent, context);
     const getBody = JSON.parse(getResult.body);
 
     expect(getBody.length).toEqual(10);

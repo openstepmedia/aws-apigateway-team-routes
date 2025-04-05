@@ -4,7 +4,7 @@
  */
 const api = await import('../app/statemachine');
 
-describe('Coupons API', () => {
+describe('Coupons Statemachine', () => {
   /**
    * Simulate a simple statemachine that has 2 states
    */
