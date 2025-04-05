@@ -21,6 +21,6 @@ export default {
   // Add or update this line to ignore the cdk folder
   testPathIgnorePatterns: [
     "/node_modules/",
-    "<rootDir>/cdk/"
+    "<rootDir>/cdk/*"
   ],  
 };

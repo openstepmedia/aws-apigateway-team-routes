@@ -5,64 +5,71 @@
 const api = await import('../app/statemachine');
 
 describe('Coupons API', () => {
-  test.only('should execute state1', async () => {
-    const event = {
-      httpMethod: 'post',
-      path: '/coupons/v1/state1',
-      body: {
-        input: {
-          inputFile: 'input.json',
-        },
-        output: {},
-      },
-    };
+  /**
+   * Simulate a simple statemachine that has 2 states
+   */
+  test('should execute state1 followed by state2', async () => {
+    const event = {};
+
     const context = {
       awsRequestId: 'statemachine.' + Date.now()
     };
-    const callback = () => { };
-    const result = await api.handler(event, context, callback);
 
+    const input = {
+      input: {
+        inputFile: 'input.json',
+      }
+    };
 
+    /**
+     * Simulate a new request to state1
+     */
+    event.path = '/coupons/v1/state1';
+    event.body = input;
+    const result1 = await api.handler(event, context);
+    console.debug('result1', result1);
+
+    /**
+     * Simulate a new request to state2
+     */
     event.path = '/coupons/v1/state2';
-    event.body = result;
-    const result2 = await api.handler(event, context, callback);
+    event.body = result1;
+    const result2 = await api.handler(event, context);
+    console.debug('result2', result2);
 
-    console.log('result', JSON.stringify(result, null, 2));
-    console.log('event2', JSON.stringify(event, null, 2));
-    console.log('result2', JSON.stringify(result2, null, 2));
-
-    process.exit();
-
-    expect(body.input).toEqual(event.body.input);
-    expect(body.output.state1Value).toEqual({
+    expect(result1.output.state1Value).toEqual({
       key: 'state1',
+      time: expect.any(Number),
+    });
+
+    expect(result1.output.state2Value).toEqual({
+      key: 'state2',
       time: expect.any(Number),
     });
   });
 
-  test('should execute state2', async () => {
-    const event = {
-      httpMethod: 'post',
-      headers: {
-        'x-forwarded-for': 'statemachine',
-      },
-      path: '/coupons/v1/state2',
-      body: {
-        input: {
-          inputFile: 'input.json',
-        },
-        output: {},
-      },
-    };
-    const context = {
-      awsRequestId: 'statemachine.123457'
-    };
-    const callback = () => { };
-    const result = await api.handler(event, context, callback);
-    const body = JSON.parse(result.body);
+  /**
+   * Simulate a new request to state2
+   * The API response is fairly simple, it should return and key and a time.
+   */
+  test('should execute state2 only', async () => {
+    const event = {};
 
-    expect(body.input).toEqual(event.body.input);
-    expect(body.output.state1Value).toEqual({
+    const context = {
+      awsRequestId: 'statemachine.' + Date.now()
+    };
+
+    const input = {
+      input: {
+        inputFile: 'input.json',
+      }
+    };
+
+    event.path = '/coupons/v1/state2';
+    event.body = input;
+    const result = await api.handler(event, context);
+
+    expect(result.output.state2Value).toEqual({
       key: 'state2',
       time: expect.any(Number),
     });

@@ -11,7 +11,7 @@ import CouponsStatemachineController from './controllers/CouponsStatemachineCont
 // @see https://github.com/jeremydaly/lambda-api
 const apiVersion = process.env.API_VERSION || 'v1.0';
 
-const api = createAPI({ 
+const router = createAPI({ 
     version: apiVersion,
     base: '/' + process.env.API_BASE + '/' + apiVersion, 
     logger: {
@@ -22,18 +22,19 @@ const api = createAPI({
         timestamp: () => new Date().toUTCString(), // custom timestamp
         stack: true,
     },
+    // IMPORTANT: Set this to false to disable the default lambda-api callback
     serializer: (data) => data
 });
 
 /**
  * Execute statemachine state1
  */
-api.post('/state1', CouponsStatemachineController.state1);
+router.post('/state1', CouponsStatemachineController.state1);
 
 /**
  * Execute statemachine state2
  */
-api.post('/state2', CouponsStatemachineController.state2);
+router.post('/state2', CouponsStatemachineController.state2);
 
 /**
  * For Statemachine, remove the default lambda-api callback
@@ -63,9 +64,7 @@ export const handler = async (event, context) => {
     /**
      * Wait for lambda-api to execute
      */
-    const response = await api.run(event, context);
-
-    console.debug('response.body:', response.body);
+    const response = await router.run(event, context);
 
     /**
      * For statemachines - strip out all header info.

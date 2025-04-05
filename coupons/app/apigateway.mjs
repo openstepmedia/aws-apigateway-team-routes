@@ -12,7 +12,7 @@ import CouponsMiddleware from './middleware/CouponsMiddleware.mjs';
 // @see https://github.com/jeremydaly/lambda-api
 const apiVersion = process.env.API_VERSION || 'v1.0';
 
-const api = createAPI({ 
+const router = createAPI({ 
     version: apiVersion,
     base: '/' + process.env.API_BASE + '/' + apiVersion, 
     logger: {
@@ -49,7 +49,7 @@ const api = createAPI({
  *                   type: array
  *                   description: Available API routes
  */
-api.get('/status', async (req, res) => {
+router.get('/status', async (req, res) => {
     return { 
         build: process.env.BUILD_NUMBER || '0',
         status: 'ok',
@@ -81,7 +81,7 @@ api.get('/status', async (req, res) => {
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
-api.get('/:id', CouponsController.read);
+router.get('/:id', CouponsController.read);
 
 /**
  * @openapi
@@ -99,7 +99,7 @@ api.get('/:id', CouponsController.read);
  *               items:
  *                 $ref: '#/components/schemas/coupon'
  */
-api.get('/',  CouponsController.all);
+router.get('/',  CouponsController.all);
 
 /**
  * @openapi
@@ -130,7 +130,7 @@ api.get('/',  CouponsController.all);
  *       400:
  *         $ref: '#/components/responses/BadRequest'
  */
-api.post('/', CouponsMiddleware.create, CouponsController.create);
+router.post('/', CouponsMiddleware.create, CouponsController.create);
 
 /**
  * @openapi
@@ -171,7 +171,7 @@ api.post('/', CouponsMiddleware.create, CouponsController.create);
  *       400:
  *         $ref: '#/components/responses/BadRequest'
  */
-api.put('/:id', CouponsController.update);
+router.put('/:id', CouponsController.update);
 
 /**
  * @openapi
@@ -197,9 +197,9 @@ api.put('/:id', CouponsController.update);
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
-api.delete('/:id', CouponsController.delete);
+router.delete('/:id', CouponsController.delete);
 
 // Declare your Lambda handler
 export const handler = async (event, context, callback) => {
-    return api.run(event, context, callback);
+    return router.run(event, context, callback);
 };
