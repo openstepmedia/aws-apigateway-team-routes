@@ -29,7 +29,7 @@ The project folder looks like this:
 └── orders
     ├── README.md
     ├── api
-│   ├── layers/nodejs
+    ├── layers/nodejs
     └── cdk
 ```
 
