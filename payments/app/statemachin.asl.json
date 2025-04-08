@@ -1,0 +1,61 @@
+{
+    "Comment": "A description of my state machine",
+    "StartAt": "InvokeState1",
+    "States": {
+      "InvokeState1": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::lambda:invoke",
+        "Output": "{% $states.result.Payload %}",
+        "Arguments": {
+          "FunctionName": "arn:aws:lambda:us-west-2::function:StateMachineLambdaStack",
+          "Payload": {
+            "path": "/coupons/v1/state1",
+            "body": "{% $states.input %}"
+          }
+        },
+        "Retry": [
+          {
+            "ErrorEquals": [
+              "Lambda.ServiceException",
+              "Lambda.AWSLambdaException",
+              "Lambda.SdkClientException",
+              "Lambda.TooManyRequestsException"
+            ],
+            "IntervalSeconds": 1,
+            "MaxAttempts": 3,
+            "BackoffRate": 2,
+            "JitterStrategy": "FULL"
+          }
+        ],
+        "Next": "InvokeState2"
+      },
+      "InvokeState2": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::lambda:invoke",
+        "Output": "{% $states.result.Payload %}",
+        "Arguments": {
+          "FunctionName": "arn:aws:lambda:us-west-2::function:StateMachineLambdaStack",
+          "Payload": {
+            "path": "/coupons/v1/state2",
+            "body": "{% $states.input %}"
+          }
+        },
+        "Retry": [
+          {
+            "ErrorEquals": [
+              "Lambda.ServiceException",
+              "Lambda.AWSLambdaException",
+              "Lambda.SdkClientException",
+              "Lambda.TooManyRequestsException"
+            ],
+            "IntervalSeconds": 1,
+            "MaxAttempts": 3,
+            "BackoffRate": 2,
+            "JitterStrategy": "FULL"
+          }
+        ],
+        "End": true
+      }
+    },
+    "QueryLanguage": "JSONata"
+  }
