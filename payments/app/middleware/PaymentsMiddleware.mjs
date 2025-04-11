@@ -1,9 +1,9 @@
 /**
- * CouponsMiddleware
- * Provides middleware functions for validating user-related requests
+ * PaymentsMiddleware
+ * Example middleware class for pre-processing payment requests
+ * @module PaymentsMiddleware
  * @class
  */
-import vine from '@vinejs/vine'
 
 class PaymentsMiddleware {
     /**
