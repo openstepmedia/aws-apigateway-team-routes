@@ -1,8 +1,8 @@
-# Payments Endpoint - BROKEN 
+# Payments Endpoint 
 
 This project is managed by the Payments team
 
-The coupons team needs their lambdas available for both 
+The Payments team needs their lambdas available for both 
 
 
 AWS API Gateway
@@ -14,6 +14,8 @@ AWS Step functions.
 ## Fastify Serverless
 
 This example is running on fastify serverless using hooks for middleware.
+
+There is also an example of using a validation schema.
 
 
 `app/statemachine.mjs`
@@ -31,9 +33,9 @@ parsing / serialization.
 
 For now there are 2 controllers:
 
-`CouponsStatemachineController.mjs`
+`PaymentsStatemachineController.mjs`
 
-`CouponsApiGatewayController.mjs`
+`PaymentsApiGatewayController.mjs`
 
 Theoretically, there could be a single controller for both, but the nature of the routes might have different contexts.
 
