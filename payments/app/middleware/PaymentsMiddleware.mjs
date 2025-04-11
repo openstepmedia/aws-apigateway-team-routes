@@ -4,20 +4,20 @@
  * @class
  */
 import vine from '@vinejs/vine'
-  
+
 class PaymentsMiddleware {
 
     /**
-     * Validates the data for creating a new user
+     * Validates the data for creating a new  payment
      * @async
      * @param {Object} data - The data to validate
-     * @param {string} data.email - The email to validate
+     * @param {number} data.amount - The email to validate
      * @returns {Promise<Object>} A promise that resolves to the validated data
      * @throws {Error} Throws an error if validation fails
      */
     static async validateCreate(data) {
         const schema = vine.object({
-            email: vine.string().email(),
+            amount: vine.number().min(10),
         });
         return await vine.validate({ schema, data });
     }
@@ -33,9 +33,8 @@ class PaymentsMiddleware {
      * @returns {Promise<void>} A promise that resolves when validation is complete
      * @throws {Error} Throws an error if validation fails
      */
-    static async create(req, res, next) {
-        await PaymentsMiddleware.validateCreate(req.body);
-        next();
+    static async create(req, res) {
+        return await PaymentsMiddleware.validateCreate(req.body);
     }
 
 }

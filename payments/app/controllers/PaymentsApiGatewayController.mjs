@@ -7,6 +7,13 @@ import PaymentModel from '../models/PaymentsModel.mjs';
 
 class PaymentsApiGatewayController {
 
+    static async status(req, res) {
+        res.status(200).send({
+            status: 'ok',
+            build: process.env.BUILD_NUMBER || '0'
+        });
+    }
+
     /**
      * Retrieves all coupons
      * @async

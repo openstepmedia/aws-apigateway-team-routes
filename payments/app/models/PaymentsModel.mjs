@@ -1,88 +1,93 @@
 /**
- * Simple coupon model
- * @module coupons/api/models/couponModel
+ * Simple payment model
+ * @module payments/api/models/paymentModel
  */
 import crypto from 'crypto';
 
 /**
- * Represents a coupon's coupon
+ * Represents a Payment
  * @class
  */
 class Payment {
     id;
-    email;
+    amount;
+    currency;
     createdAt;
 
     /**
-     * Creates a new Coupon instance
-     * @param {Object} params - The Coupon parameters
-     * @param {string} params.email - The Coupon coupon's email address
+     * Creates a new payment instance
+     * @param {Object} params - The payment parameters
+     * @param {string} params.email - The payment payment's email address
      */
     constructor(params) {
         this.id = crypto.randomUUID();
-        this.email = params.email;
+        this.amount = params.amount;
+        this.currency = params.currency || 'USD';
         this.createdAt = new Date();
     }
 }
 
 /**
- * Provides methods for managing Coupon data
+ * Provides methods for managing payment data
  * @class
  */
 class PaymentModel {
-    static coupons = [];
+    static payments = [];
 
     /**
-     * Retrieves all coupons
-     * @returns {Array<Coupon>} An array of all Coupon
+     * Retrieves all payments
+     * @returns {Array<payment>} An array of all payment
      */
     static all() {
-        return this.coupons;
+        return this.payments;
     }
 
     /**
-     * Creates a new coupon
-     * @param {Object} params - The Coupon parameters
-     * @param {string} params.email - The Coupon's email address
-     * @returns {Coupon} The newly created Coupon
+     * Creates a new payment
+     * @param {Object} params - The payment parameters
+     * @param {string} params.email - The payment's email address
+     * @returns {payment} The newly created payment
      */
     static async create(params) {
-        const coupon = new Coupon({ email: params.email });
-        this.coupons.push(coupon);
-        return coupon;
+        const payment = new Payment({ 
+            amount: params.amount,
+            currency: params.currency,
+        });
+        this.payments.push(payment);
+        return payment;
     }
 
     /**
-     * Retrieves a coupon by ID
-     * @param {string} id - The ID of the coupon to retrieve
-     * @returns {Coupon|undefined} The coupon if found, undefined otherwise
+     * Retrieves a payment by ID
+     * @param {string} id - The ID of the payment to retrieve
+     * @returns {payment|undefined} The payment if found, undefined otherwise
      */
     static read(id) {
-        return this.coupons.find(coupon => coupon.id === id);
+        return this.payments.find(payment => payment.id === id);
     }
 
     /**
-     * Updates a coupon by ID
-     * @param {string} id - The ID of the coupon to update
-     * @param {Object} params - The updated coupon parameters
+     * Updates a payment by ID
+     * @param {string} id - The ID of the payment to update
+     * @param {Object} params - The updated payment parameters
      * @param {string} params.email - The updated email address
-     * @returns {Coupon|undefined} The updated coupon if found, undefined otherwise
+     * @returns {payment|undefined} The updated payment if found, undefined otherwise
      */
     static update(id, params) {
-        const coupon = this.coupons.find(coupon => coupon.id === id);
-        coupon.email = params.email;
-        return coupon;
+        const payment = this.payments.find(payment => payment.id === id);
+        payment.email = params.email;
+        return payment;
     }
 
     /**
-     * Deletes a coupon by ID
-     * @param {string} id - The ID of the coupon to delete
-     * @returns {Coupon|undefined} The deleted coupon if found, undefined otherwise
+     * Deletes a payment by ID
+     * @param {string} id - The ID of the payment to delete
+     * @returns {payment|undefined} The deleted payment if found, undefined otherwise
      */
     static delete(id) {
-        const coupon = this.coupons.find(coupon => coupon.id === id);
-        this.coupons = this.coupons.filter(coupon => coupon.id !== id);
-        return coupon;
+        const payment = this.payments.find(payment => payment.id === id);
+        this.payments = this.payments.filter(payment => payment.id !== id);
+        return payment;
     }
 }
 

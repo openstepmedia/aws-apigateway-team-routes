@@ -1,16 +1,51 @@
-// lambda.mjs
-import awsLambdaFastify from '@fastify/aws-lambda';
-import app from './app.mjs'; // Import the configured Fastify app
+// src/server.mjs
+import fastify from 'fastify';
+import serverless from '@fastify/aws-lambda';
+import PaymentsController from './controllers/PaymentsApiGatewayController.mjs';
+import PaymentsMiddleware from './middleware/PaymentsMiddleware.mjs';
 
-// Create the handler by wrapping the Fastify app instance
-const proxy = awsLambdaFastify(app);
+// Initialize Fastify app
+const router = fastify({
+  logger: true
+});
 
-// Export the handler function for AWS Lambda
-// AWS Lambda will call this function `handler` by default.
-export const handler = proxy;
+// Hook to set default Content-Type for incoming requests
+router.addHook('preParsing', (request, reply, payload, done) => {
+    // Check if Content-Type is missing or undefined
+    if (!request.headers['content-type']) {
+      request.headers['content-type'] = 'application/json';
+    }
+    done(null, payload);
+});
 
-// You might see alternative syntaxes like:
-// export const handler = async (event, context) => {
-//   return proxy(event, context);
-// };
-// Both achieve the same result with @fastify/aws-lambda v3+
+// Global error handler for unexpected errors
+router.setErrorHandler((error, request, reply) => {
+  request.log.error(error);
+  return reply.status(error.statusCode || 500).send({
+    error: 'Internal Server Error',
+    message: error.message
+  });
+});
+
+// Define a simple route
+router.get('/payments/v1/status', PaymentsController.status);
+
+// Get payment by id
+router.get('/payments/v1/:id', PaymentsController.read);
+
+// Get all payments
+router.get('/payments/v1',  PaymentsController.all);
+
+// POST endpoint with middleware validation
+router.post('/payments/v1/create', {
+  preHandler: [PaymentsMiddleware.create] 
+}, PaymentsController.create);
+
+// Update payment record
+router.put('/payments/v1/:id', PaymentsController.update);
+
+// Delete payment record
+router.delete('/payments/v1/:id', PaymentsController.delete);
+
+// Export the Lambda handler
+export const handler = serverless(router);
