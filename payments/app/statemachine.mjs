@@ -1,73 +1,44 @@
 /**
- * Lightweight API for managing users.
- * This file behaves as the entry point / front-controller for the API.
- * 
- * swagger-jsdoc is used to create an OpenAPI specification from JSDoc comments.
+ * Payments State Machine
+ * Using fastify to manage routes
+ * Allows statemachine to leverage validation, middleware, and other features of fastify.
  */
-import createAPI from 'lambda-api';
-import CouponsStatemachineController from './controllers/CouponsStatemachineController.mjs';
+import fastify from 'fastify';
+import serverless from '@fastify/aws-lambda';
+import PaymentsController from './controllers/PaymentsStatemachineController.mjs';
 
 // instantiate framework
-// @see https://github.com/jeremydaly/lambda-api
-const apiVersion = process.env.API_VERSION || 'v1.0';
+const apiVersion = process.env.API_VERSION || 'v1';
 
-const router = createAPI({ 
-    version: apiVersion,
-    base: '/' + process.env.API_BASE + '/' + apiVersion, 
-    logger: {
-        level: process.env.API_LOG_LEVEL || 'info',
-        access: true,
-        customKey: 'detail',
-        messageKey: 'message',
-        timestamp: () => new Date().toUTCString(), // custom timestamp
-        stack: true,
-    },
-    // IMPORTANT: Set this to false to disable the default lambda-api callback
-    serializer: (data) => data
-});
+// Initialize Fastify app
+const router = fastify({ logger: true });
 
 /**
  * Execute statemachine state1
  */
-router.post('/state1', CouponsStatemachineController.state1);
+router.post(`/payments/${apiVersion}/state1`, PaymentsController.state1);
 
 /**
  * Execute statemachine state2
  */
-router.post('/state2', CouponsStatemachineController.state2);
+router.post(`/payments/${apiVersion}/state2`, PaymentsController.state2);
 
-/**
- * For Statemachine, remove the default lambda-api callback
- * @param {*} event 
- * @param {*} context 
- * @returns 
- */
+// Wrap Fastify with serverless for Lambda compatibility
+const serverlessHandler = serverless(router);
+
+// Export the Lambda handler
 export const handler = async (event, context) => {
-    console.debug('event:', event);
-    console.debug('context:', context);
+    // Force httpMethod to POST for statemachine lambdas
+    event.body = JSON.stringify(event.body);
+    event.headers = {
+        'Content-Type': 'application/json',
+        ...event.headers
+    };
+    event.httpMethod = 'POST';
 
-    /**
-     * Force method to 'post' to trick lambda-json to think this is an api-gateway request.
-     */
-    event.httpMethod = 'post';
+    // Call the serverless handler with the modified event
+    const result = await serverlessHandler(event, context);
 
-    /**
-     * If you are using persistent connections in your function routes 
-     * (such as AWS RDS or Elasticache), be sure to 
-     * set context.callbackWaitsForEmptyEventLoop = false; 
-     * This will allow the freezing of connections and 
-     * will prevent Lambda from hanging on open connections. 
-     * See: https://docs.aws.amazon.com/lambda/latest/dg/services-alb.html
-     */
-    context.callbackWaitsForEmptyEventLoop = false; 
-
-    /**
-     * Wait for lambda-api to execute
-     */
-    const response = await router.run(event, context);
-
-    /**
-     * For statemachines - strip out all header info.
-     */
-    return response.body;
-};
+    // Return the body as an object to statemachine
+    return JSON.parse(result.body);
+}

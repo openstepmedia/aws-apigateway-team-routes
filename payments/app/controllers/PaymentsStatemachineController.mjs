@@ -1,13 +1,13 @@
 /**
  * UsersController
- * Each method acts as a transformer between the HTTP request and the CouponModel
+ * Each method acts as a transformer between the HTTP request and the PaymentModel
  * @class
  * @see https://github.com/jeremydaly/lambda-api?tab=readme-ov-file#request
  * Using static methods to avoid instantiating the class and keeping index.mjs cleaner.
  */
-import CouponModel from '../models/PaymentsModel.mjs';
+import PaymentModel from '../models/PaymentsModel.mjs';
 
-class CouponsStatemachineController {
+class PaymentsStatemachineController {
 
     static async state1(req, res) {
         // use logger
@@ -43,4 +43,4 @@ class CouponsStatemachineController {
 
 }
 
-export default CouponsStatemachineController;
+export default PaymentsStatemachineController;

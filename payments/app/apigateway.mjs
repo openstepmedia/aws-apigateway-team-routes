@@ -1,4 +1,6 @@
-// src/server.mjs
+/**
+ * Payments endpoint for AWS API Gateway
+ */
 import fastify from 'fastify';
 import serverless from '@fastify/aws-lambda';
 import { PaymentSchema } from './schemas/PaymentSchema.mjs';
