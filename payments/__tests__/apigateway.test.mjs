@@ -66,7 +66,7 @@ describe('Payments API', () => {
 
     console.debug('result', result);
 
-    expect(result.statusCode).toBe(500);
+    expect(result.statusCode).toBe(400);
   });
 
   test('should get all payments', async () => {

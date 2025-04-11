@@ -1,8 +1,10 @@
 // src/server.mjs
 import fastify from 'fastify';
 import serverless from '@fastify/aws-lambda';
+import { PaymentSchema } from './schemas/PaymentSchema.mjs';
 import PaymentsController from './controllers/PaymentsApiGatewayController.mjs';
 import PaymentsMiddleware from './middleware/PaymentsMiddleware.mjs';
+
 
 // Initialize Fastify app
 const router = fastify({
@@ -30,15 +32,16 @@ router.setErrorHandler((error, request, reply) => {
 // Define a simple route
 router.get('/payments/v1/status', PaymentsController.status);
 
-// Get payment by id
-router.get('/payments/v1/:id', PaymentsController.read);
-
 // Get all payments
 router.get('/payments/v1',  PaymentsController.all);
 
-// POST endpoint with middleware validation
+// Get payment by id
+router.get('/payments/v1/:id', PaymentsController.read);
+
+// POST endpoint with middleware validation and schema
 router.post('/payments/v1/create', {
-  preHandler: [PaymentsMiddleware.create] 
+  preHandler: [PaymentsMiddleware.create],
+  schema: PaymentSchema,
 }, PaymentsController.create);
 
 // Update payment record
